@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :classification do
-    post { nil }
-    tag { nil }
+    post
+    tag
   end
 end

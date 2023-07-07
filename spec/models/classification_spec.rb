@@ -1,5 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Classification, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'valid' do
+    it 'if there is a post and a tag'
+  end
+
+  context 'invalid' do
+    it 'if there is no post'
+    it 'if there is no tag'
+  end
 end

@@ -1,5 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'Is invalid' do
+    it 'if there is no name'
+  end
+
+  context 'Is valid' do
+    it 'if there is a name'
+  end
+
+  context 'Associations' do
+    it 'destroying a tag destroys its classifications'
+  end
 end

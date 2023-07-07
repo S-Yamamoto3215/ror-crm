@@ -95,4 +95,8 @@ RSpec.describe Post, type: :model do
       expect(post.errors[:body]).to_not be_empty
     end
   end
+
+  context 'associations' do
+    it 'destroys associated classifications'
+  end
 end
