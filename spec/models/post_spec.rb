@@ -90,5 +90,9 @@ RSpec.describe Post, type: :model do
     expect(post.errors[:body]).to_not be_empty
   end
 
-  it 'destroys associated classifications'
+  it 'destroys associated classifications' do
+    post = FactoryBot.create(:post)
+    3.times { post.tags << FactoryBot.create(:tag) }
+    expect { post.destroy }.to change { Classification.count }.by(-3)
+  end
 end
