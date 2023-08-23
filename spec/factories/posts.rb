@@ -3,5 +3,6 @@ FactoryBot.define do
     title { 'My Title' }
     body { 'My Body. My Body' }
     sequence(:slug) { |n| "my-title-#{n}" }
+    user
   end
 end
