@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
+  user = FactoryBot.create(:user)
+
   it 'is valid' do
-    expect(FactoryBot.build(:post)).to be_valid
+    expect(FactoryBot.build(:post, user:)).to be_valid
   end
 
   it 'is invalid if there is no title' do
