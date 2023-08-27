@@ -7,12 +7,9 @@ RSpec.describe 'Posts', type: :system do
 
   scenario 'user creates a new post' do
     user = FactoryBot.create(:user)
+    sign_in user
 
     visit root_path
-    click_button 'ログイン'
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_button 'Log in'
 
     expect {
       click_link 'Post List'
