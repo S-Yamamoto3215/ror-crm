@@ -15,26 +15,20 @@ RSpec.describe PostsController, type: :controller do
 
   describe '#show' do
     context 'as an authorized user' do
-      before do
-        @user = FactoryBot.create(:user)
-        @post = FactoryBot.create(:post, user: @user)
-      end
+      include_context 'post setup'
 
       it 'responds successfully' do
-        sign_in @user
-        get :show, params: { id: @post.id }
+        sign_in user
+        get :show, params: { id: post.id }
         expect(response).to be_successful
       end
     end
 
     context 'as an unauthorized user' do
-      before do
-        @user = FactoryBot.create(:user)
-        @post = FactoryBot.create(:post, user: @user)
-      end
+      include_context 'post setup'
 
       it 'redirects to the sign-in page' do
-        get :show, params: { id: @post.id }
+        get :show, params: { id: post.id }
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -42,27 +36,25 @@ RSpec.describe PostsController, type: :controller do
 
   describe '#create' do
     context 'as an authorized user' do
-      before do
-        @user = FactoryBot.create(:user)
-      end
+      let(:user) { FactoryBot.create(:user) }
 
       context 'with valid attributes' do
         it 'adds a post' do
           post_params = FactoryBot.attributes_for(:post)
-          sign_in @user
+          sign_in user
           expect {
             post :create, params: { post: post_params }
-          }.to change(@user.posts, :count).by(1)
+          }.to change(user.posts, :count).by(1)
         end
       end
 
       context 'with invalid attributes' do
         it 'does not add a post' do
           post_params = FactoryBot.attributes_for(:post, :invalid)
-          sign_in @user
+          sign_in user
           expect {
             post :create, params: { post: post_params }
-          }.to_not change(@user.posts, :count)
+          }.to_not change(user.posts, :count)
         end
       end
     end
@@ -84,41 +76,35 @@ RSpec.describe PostsController, type: :controller do
 
   describe '#update' do
     context 'as an authorized user' do
-      before do
-        @user = FactoryBot.create(:user)
-        @post = FactoryBot.create(:post, user: @user)
-      end
+      include_context 'post setup'
 
       it 'updates a post' do
         post_params = FactoryBot.attributes_for(:post, title: 'New post content')
-        sign_in @user
-        patch :update, params: { id: @post.id, post: post_params }
-        expect(@post.reload.title).to eq 'New post content'
+        sign_in user
+        patch :update, params: { id: post.id, post: post_params }
+        expect(post.reload.title).to eq 'New post content'
       end
 
       it 'redirects to the post show page' do
         post_params = FactoryBot.attributes_for(:post, title: 'New post content')
-        sign_in @user
-        patch :update, params: { id: @post.id, post: post_params }
-        expect(response).to redirect_to post_path(@post)
+        sign_in user
+        patch :update, params: { id: post.id, post: post_params }
+        expect(response).to redirect_to post_path(post)
       end
     end
 
     context 'as an unauthorized user' do
-      before do
-        @user = FactoryBot.create(:user)
-        @post = FactoryBot.create(:post, user: @user)
-      end
+      include_context 'post setup'
 
       it 'does not update the post' do
         post_params = FactoryBot.attributes_for(:post, title: 'New post content')
-        patch :update, params: { id: @post.id, post: post_params }
-        expect(@post.reload.title).not_to eq 'New post content'
+        patch :update, params: { id: post.id, post: post_params }
+        expect(post.reload.title).not_to eq 'New post content'
       end
 
       it 'redirects to the sign-in page' do
         post_params = FactoryBot.attributes_for(:post, title: 'New post content')
-        patch :update, params: { id: @post.id, post: post_params }
+        patch :update, params: { id: post.id, post: post_params }
         expect(response).to redirect_to new_user_session_path
       end
     end
